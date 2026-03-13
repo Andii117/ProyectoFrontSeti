@@ -1,0 +1,35 @@
+<div class="container">
+  <h1>Detector de Mutantes</h1>
+
+  <p>Ingresa la secuencia de ADN (una fila por línea)</p>
+
+  <textarea [(ngModel)]="dnaInput" rows="8" placeholder="formato JSON "></textarea>
+
+  <button (click)="validateDNA()">Analizar ADN</button>
+
+  <!-- Resultado -->
+  <div class="result-container">
+    <h2>Resultado:</h2>
+
+    <h3 *ngIf="result; else noData">
+      {{ result }}
+    </h3>
+
+    <ng-template #noData>
+      <p>Favor ingrese la secuencia de ADN</p>
+    </ng-template>
+  </div>
+
+  <!-- Cuadrícula ADN -->
+  <div *ngIf="dnaMatrix.length > 0" class="dna-grid">
+    <div *ngFor="let row of dnaMatrix; let i = index" class="dna-row">
+      <div
+        *ngFor="let cell of row; let j = index"
+        class="dna-cell"
+        [class.mutant]="mutantCells.has(i + '-' + j)"
+      >
+        {{ cell }}
+      </div>
+    </div>
+  </div>
+</div>
