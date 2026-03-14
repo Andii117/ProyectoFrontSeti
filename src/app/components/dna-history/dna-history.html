@@ -1,0 +1,34 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Historial de análisis de ADN</h2>
+
+  <div class="mb-3">
+    <button routerLink="/" class="btn btn-primary me-2">⬅ Volver al detector</button>
+
+    <button (click)="clearHistory()" class="btn btn-danger">Limpiar historial</button>
+  </div>
+</div>
+<table class="table table-striped table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th>Fecha</th>
+      <th>ADN</th>
+      <th>Resultado</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (item of history; track item.id) {
+      <tr>
+        <td>{{ item.date }}</td>
+        <td>{{ item.dna.join(', ') }}</td>
+        <td>
+          @if (item.isMutant) {
+            🧬 Mutante
+          } @else {
+            👤 Humano
+          }
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

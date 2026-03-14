@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { Mutant } from '../../services/mutant';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dna-detector',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './dna-detector.html',
   styleUrl: './dna-detector.css',
 })

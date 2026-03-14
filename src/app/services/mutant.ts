@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { DnaHistoryService } from './dna-history';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Mutant {
   mutantPositions: Set<string> = new Set();
+
+  constructor(private historyService: DnaHistoryService) {}
 
   isMutant(dna: string[]): boolean {
     this.mutantPositions.clear();
@@ -31,6 +34,7 @@ export class Mutant {
             this.mutantPositions.add(`${i}-${j + 3}`);
 
             console.log('Horizontal encontrada en:', i, j, 'letra:', letter);
+
             sequences++;
           }
         }
@@ -48,6 +52,7 @@ export class Mutant {
             this.mutantPositions.add(`${i + 3}-${j}`);
 
             console.log('Vertical encontrada en:', i, j);
+
             sequences++;
           }
         }
@@ -65,6 +70,7 @@ export class Mutant {
             this.mutantPositions.add(`${i + 3}-${j + 3}`);
 
             console.log('Diagonal ↘ encontrada en:', i, j);
+
             sequences++;
           }
         }
@@ -82,16 +88,22 @@ export class Mutant {
             this.mutantPositions.add(`${i + 3}-${j - 3}`);
 
             console.log('Diagonal ↙ encontrada en:', i, j);
+
             sequences++;
           }
         }
 
         if (sequences >= 2) {
           console.log('sequences:', sequences);
+
+          this.historyService.saveAnalysis(dna, true);
+
           return true;
         }
       }
     }
+
+    this.historyService.saveAnalysis(dna, false);
 
     return false;
   }

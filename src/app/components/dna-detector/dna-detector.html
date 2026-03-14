@@ -1,35 +1,70 @@
-<div class="container">
-  <h1>Detector de Mutantes</h1>
-
-  <p>Ingresa la secuencia de ADN (una fila por línea)</p>
-
-  <textarea [(ngModel)]="dnaInput" rows="8" placeholder="formato JSON "></textarea>
-
-  <button (click)="validateDNA()">Analizar ADN</button>
-
-  <!-- Resultado -->
-  <div class="result-container">
-    <h2>Resultado:</h2>
-
-    <h3 *ngIf="result; else noData">
-      {{ result }}
-    </h3>
-
-    <ng-template #noData>
-      <p>Favor ingrese la secuencia de ADN</p>
-    </ng-template>
+<div class="container mt-5">
+  <!-- Título -->
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">🧬 Detector de Mutantes</h1>
+    <p class="text-muted">Ingresa la secuencia de ADN (una fila por línea)</p>
   </div>
 
-  <!-- Cuadrícula ADN -->
-  <div *ngIf="dnaMatrix.length > 0" class="dna-grid">
-    <div *ngFor="let row of dnaMatrix; let i = index" class="dna-row">
-      <div
-        *ngFor="let cell of row; let j = index"
-        class="dna-cell"
-        [class.mutant]="mutantCells.has(i + '-' + j)"
-      >
-        {{ cell }}
+  <!-- Formulario -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label fw-semibold"> Secuencia de ADN </label>
+
+        <textarea
+          class="form-control"
+          [(ngModel)]="dnaInput"
+          rows="8"
+          placeholder='Ejemplo: ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]'
+        ></textarea>
+      </div>
+
+      <div class="d-flex justify-content-center gap-2">
+        <button class="btn btn-success" (click)="validateDNA()">🔬 Analizar ADN</button>
+
+        <button class="btn btn-primary" [routerLink]="['/history']">📜 Ver historial</button>
       </div>
     </div>
   </div>
+
+  <!-- Resultado -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h4 class="card-title">Resultado</h4>
+
+      @if (result) {
+        <div class="alert alert-info mt-3">
+          <h5 class="mb-0">{{ result }}</h5>
+        </div>
+      } @else {
+        <div class="alert alert-secondary mt-3">Favor ingrese la secuencia de ADN</div>
+      }
+    </div>
+  </div>
+
+  <!-- Matriz ADN -->
+  @if (dnaMatrix.length > 0) {
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title mb-3">Matriz de ADN</h4>
+
+        <div class="d-flex align-items-center flex-column gap-1">
+          @for (row of dnaMatrix; track $index; let i = $index) {
+            <div class="d-flex">
+              @for (cell of row; track $index; let j = $index) {
+                <div
+                  class="border text-center fw-bold d-flex align-items-center justify-content-center"
+                  style="width: 40px; height: 40px"
+                  [class.bg-danger]="mutantCells.has(i + '-' + j)"
+                  [class.text-white]="mutantCells.has(i + '-' + j)"
+                >
+                  {{ cell }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
 </div>
