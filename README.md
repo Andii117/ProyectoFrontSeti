@@ -213,7 +213,11 @@ La aplicación muestra una **cuadrícula NxN** donde:
 ---
 
 # 👨‍💻 Autor
-
+Harold Andres Jara Granados
+andresjara640@gmail.com
+3182673318
+Ingeniero de sistemas
+Desarrollador Full Stack
 Proyecto desarrollado como ejercicio de **detección de mutaciones en ADN** usando Angular.
 
 ---
