@@ -5,23 +5,28 @@ import { DnaHistoryService } from './dna-history';
   providedIn: 'root',
 })
 export class Mutant {
+  //Set que guardará las posiciones donde se encontraron secuencias mutantes.
   mutantPositions: Set<string> = new Set();
 
   constructor(private historyService: DnaHistoryService) {}
 
   isMutant(dna: string[]): boolean {
+    //Limpia las posiciones encontradas anteriormente.
     this.mutantPositions.clear();
-
     let sequences = 0;
     const n = dna.length;
 
+    //Convierte la entrada ADN en una matriz
     const matrix = dna.map((row) => row.split(''));
 
+    //recorre la matriz
     for (let i = 0; i < n; i++) {
       for (let j = 0; j < n; j++) {
+        //Obtiene la letra en la posicion ij una a una
         const letter = matrix[i][j];
 
-        // Horizontal →
+        //Verifica que hay espacio suficiente para comparar 4 letras seguidas.
+        //Buscar secuencia Horizontal → y guarda las letras
         if (j + 3 < n) {
           if (
             letter === matrix[i][j + 1] &&
@@ -39,7 +44,7 @@ export class Mutant {
           }
         }
 
-        // Vertical ↓
+        //Verifica que hay espacio hacia abajo y Buscar secuencia Vertical ↓
         if (i + 3 < n) {
           if (
             letter === matrix[i + 1][j] &&
@@ -57,7 +62,7 @@ export class Mutant {
           }
         }
 
-        // Diagonal ↘
+        //Verifica que hay espacio en Diagonal ↘
         if (i + 3 < n && j + 3 < n) {
           if (
             letter === matrix[i + 1][j + 1] &&
@@ -75,7 +80,7 @@ export class Mutant {
           }
         }
 
-        // Diagonal ↙
+        //Verifica que hay espacio hacia abajo e izquierda. Diagonal ↙
         if (i + 3 < n && j - 3 >= 0) {
           if (
             letter === matrix[i + 1][j - 1] &&
@@ -93,18 +98,20 @@ export class Mutant {
           }
         }
 
+        //Verificar si ya es mutante
         if (sequences >= 2) {
           console.log('sequences:', sequences);
 
+          //Almacena en el historial
           this.historyService.saveAnalysis(dna, true);
-
+          //Es mutante
           return true;
         }
       }
     }
-
+    //Almacena en el historial
     this.historyService.saveAnalysis(dna, false);
-
+    //Es humano
     return false;
   }
 }
